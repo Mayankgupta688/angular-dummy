@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { IProduct } from './interface/product.interface';
 @Component({
     selector: 'app-products',
     templateUrl: './product-list.component.html'
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
     pageTitle = 'Product List';
-    products: any[] = [
+    isShowImage: boolean = true;
+    listFilter: string = "";
+    products: IProduct[] = [
         {
             productId: 1,
             productName: 'Leaf Rake',
@@ -15,7 +17,7 @@ export class ProductListComponent {
             description: 'Leaf rake with 48-inch wooden handle.',
             price: 19.95,
             starRating: 3.2,
-            imageUrl: 'assets/images/leaf_rake.png'
+            imageUrl: 'https://bhoomigardencentre.b-cdn.net/wp-content/uploads/2022/03/garden-rake-111.jpg'
         },
         {
             productId: 2,
@@ -25,7 +27,15 @@ export class ProductListComponent {
             description: '15 gallon capacity rolling garden cart',
             price: 32.99,
             starRating: 4.2,
-            imageUrl: 'assets/images/garden_cart.png'
+            imageUrl: 'https://pyxis.nymag.com/v1/imgs/350/657/a5a9d7ab25bc900fdc44717a4d99757bbb-garden-cart-lede.rhorizontal.w700.jpg'
         }
     ];
+
+    ngOnInit() {
+        console.log("OnInit working...")
+    }
+
+    toggleImageText() {
+        this.isShowImage = !this.isShowImage;
+    }
 }
