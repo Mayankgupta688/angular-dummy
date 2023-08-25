@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-2">Filter by:</div>
             <div class="col-md-4">
-                <input type="text" [(ngModel)]="listFilter">
+                <input type="text" [ngModel]="listFilter" (ngModelChange)="searchText($event)">
             </div>
         </div>
     </div>
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="table-reponsive">
-        <table class="table" *ngIf="products && products.length">
+        <table class="table" *ngIf="filteredProducts && filteredProducts.length">
             <tr>
                 <th>
                     <button (click)="toggleImageText()" class="btn btn-primary">
@@ -30,15 +30,18 @@
                 <th>5 Star Rating</th>
             </tr>
             <tbody>
-                <tr *ngFor="let product of products">
-                    <td *ngIf="isShowImage">
-                        <img width="50px" height="50px" src={{product.imageUrl}}>
+                <tr *ngFor="let product of filteredProducts">
+                    <td>
+                        <img *ngIf="isShowImage" width="50px" height="50px" src={{product.imageUrl}}>
                     </td>
                     <td>{{ product.productName }}</td>
                     <td>{{ product.productCode | lowercase | convertToSpace: '-' }}</td>
                     <td>{{ product.releaseDate }}</td>
                     <td>{{ product.price | currency: 'INR' }}</td>
-                    <td>{{ product.starRating }}</td>
+                    <td>
+                        <app-star [rating]="product.starRating" (notifyRatingClicked)="onRatingClicked($event)">
+                        </app-star>
+                    </td>
                 </tr>
             </tbody>
         </table>
