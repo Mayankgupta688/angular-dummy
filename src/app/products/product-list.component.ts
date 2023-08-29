@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './interface/product.interface';
+import { ProductService } from './product.service';
+import { Subscription } from "rxjs";
 @Component({
     selector: 'app-products',
     templateUrl: './product-list.component.html'
@@ -8,7 +10,8 @@ export class ProductListComponent implements OnInit {
     pageTitle = 'Product List';
     isShowImage: boolean = true;
     listFilter: string = "";
-
+    sub!: Subscription;
+    errorMessage = '';
     // get listFilter(): string {
     //     return this._listFilter;
     // }
@@ -18,31 +21,21 @@ export class ProductListComponent implements OnInit {
     // }
 
     filteredProducts: IProduct[] = [];
-    products: IProduct[] = [
-        {
-            productId: 1,
-            productName: 'Leaf Rake',
-            productCode: 'GDN-0011',
-            releaseDate: 'March 19, 2019',
-            description: 'Leaf rake with 48-inch wooden handle.',
-            price: 19.95,
-            starRating: 2.2,
-            imageUrl: 'https://bhoomigardencentre.b-cdn.net/wp-content/uploads/2022/03/garden-rake-111.jpg'
-        },
-        {
-            productId: 2,
-            productName: 'Garden Cart',
-            productCode: 'GDN-0023',
-            releaseDate: 'March 18, 2019',
-            description: '15 gallon capacity rolling garden cart',
-            price: 32.99,
-            starRating: 5,
-            imageUrl: 'https://pyxis.nymag.com/v1/imgs/350/657/a5a9d7ab25bc900fdc44717a4d99757bbb-garden-cart-lede.rhorizontal.w700.jpg'
-        }
-    ];
+    products: IProduct[] = this.productService.getProductsArray();
+
+    constructor(private productService: ProductService) { }
 
     ngOnInit() {
-        this.filteredProducts = this.products;
+        this.filteredProducts = this.productService.getProductsArray();
+        // this.sub = this.productService.getProducts().subscribe({
+        //     next: products => {
+        //         this.products = products;
+        //         this.filteredProducts = this.products;
+        //     },
+        //     error: err => {
+        //         this.errorMessage = err;
+        //     }
+        // });
         console.log("OnInit working...")
     }
 
